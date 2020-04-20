@@ -29,12 +29,16 @@ namespace CustomIdentityTest
         public void ConfigureServices(IServiceCollection services)
         {
             // Add identity types
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, ApplicationRole>()
                 .AddDefaultTokenProviders();
+
+            //services.AddDefaultIdentity<ApplicationUser>()
+            //    .AddRoles<ApplicationRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
             // Identity Services
             services.AddTransient<IUserStore<ApplicationUser>, CustomUserStore>();
-            //services.AddTransient<IRoleStore<ApplicationRole>, CustomRoleStore>();
+            services.AddTransient<IRoleStore<ApplicationRole>, CustomRoleStore>();
             string connectionString = Configuration.GetConnectionString("SqlConnection");
             services.AddTransient<SqlConnection>(e => new SqlConnection(connectionString));
             services.AddTransient<DapperUsersTable>();
